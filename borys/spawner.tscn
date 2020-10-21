@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Position2D.gd" type="Script" id=1]
+[ext_resource path="res://FlyMob — копия.tscn" type="PackedScene" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+
+[sub_resource type="Animation" id=1]
+
+resource_name = "Новая анимация"
+length = 3.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 360 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Spawner" type="Position2D"]
+
+position = Vector2( 13.015, -48.2142 )
+rotation = -1.56091
+_sections_unfolded = [ "Material", "Transform", "Visibility" ]
+
+[node name="spw" type="Position2D" parent="." index="0"]
+
+script = ExtResource( 1 )
+_sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
+spawnScene = ExtResource( 2 )
+timerPath = NodePath("timer")
+minWaitTime = 0.3
+maxWaitTime = 0.68
+
+[node name="timer" type="Timer" parent="spw" index="0"]
+
+process_mode = 1
+wait_time = 1.0
+one_shot = true
+autostart = false
+
+[node name="point" type="RigidBody2D" parent="spw" index="1"]
+
+scale = Vector2( 0.409765, 0.409765 )
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+mode = 0
+mass = 2.04082e-005
+friction = 1.0
+bounce = 0.0
+gravity_scale = 5.0
+custom_integrator = true
+continuous_cd = 0
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+linear_velocity = Vector2( 0, 0 )
+linear_damp = -1.0
+angular_velocity = 0.0
+angular_damp = -1.0
+_sections_unfolded = [ "Angular", "Applied Forces", "Collision", "Linear", "Pickable", "Transform" ]
+
+[node name="Sprite" type="Sprite" parent="spw/point" index="0"]
+
+rotation = 1.56032
+scale = Vector2( 1.02648, 0.941225 )
+texture = ExtResource( 3 )
+_sections_unfolded = [ "Transform" ]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="spw/point" index="1"]
+
+root_node = NodePath("..")
+autoplay = "Новая анимация"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+"anims/Новая анимация" = SubResource( 1 )
+blend_times = [  ]
+
+[connection signal="timeout" from="spw/timer" to="spw" method="_on_timer_timeout"]
+
+
